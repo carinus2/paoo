@@ -1,0 +1,3 @@
+/Users/nistorcarina/Desktop/an4/paoo/MakeupApp/src/CMakeFiles/MakeupApp.dir
+/Users/nistorcarina/Desktop/an4/paoo/MakeupApp/src/CMakeFiles/edit_cache.dir
+/Users/nistorcarina/Desktop/an4/paoo/MakeupApp/src/CMakeFiles/rebuild_cache.dir
