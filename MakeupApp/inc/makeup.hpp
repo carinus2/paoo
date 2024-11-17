@@ -18,6 +18,13 @@ public:
 
     CosmeticProduct& operator=(const CosmeticProduct& other);
 
+     // Copy Constructor
+    CosmeticProduct(const CosmeticProduct& other);
+
+    // Move Constructor
+    CosmeticProduct(CosmeticProduct&& other) noexcept;
+
+
     // Getters
     std::string getName() const;
     std::string getBrand() const;
@@ -31,4 +38,7 @@ public:
     void setPrice(double p);
     void setQuantity(int q);
     void setDescription(const char* desc); 
+
+    bool sellProduct(int amount);
+    void displayProductInfo() const;
 };

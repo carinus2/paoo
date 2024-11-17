@@ -1,24 +1,61 @@
-// src/main.cpp
-#include "makeup.hpp"
+#include "bundle_cosmetic.hpp"
 #include <iostream>
+#include <vector>
+#include <utility> // pentru std::move
 
 int main() {
-
+    // Test 1: Constructor și Destructor
+    std::cout << "Creating initial product...\n";
     CosmeticProduct lipstick("Lipstick", "MAC", 10.99, 5, "Bright red shade, long-lasting.");
-    CosmeticProduct foundation("Foundation", "YSL", 20.99, 3, "Matte finish with SPF 15.");
-
-    std::cout << "Initial Products:\n";
     lipstick.displayProductInfo();
-    foundation.displayProductInfo();
 
-    std::cout << "Apply overloading here:\n";
-    foundation = lipstick;
+    // Test 2: Copy Constructor
+    std::cout << "\nTesting Copy Constructor...\n";
+    CosmeticProduct lipstickCopy = lipstick;
+    lipstickCopy.displayProductInfo();
 
-    std::cout << "\nAfter Assignment (foundation = lipstick):\n";
-    foundation.displayProductInfo();
+    // Test 3: Move Constructor
+    std::cout << "\nTesting Move Constructor...\n";
+    CosmeticProduct lipstickMoved = std::move(lipstick);
+    lipstickMoved.displayProductInfo();
 
-    lipstick.sellProduct(3);//vindem 3 produse
-    lipstick.sellProduct(3);//incercam sa vedem daca apare ca e pe stoc
+    // Test 4: Sell Product
+    std::cout << "\nTesting Product Selling...\n";
+    lipstickMoved.sellProduct(3); // Vindem 3 unități
+    lipstickMoved.sellProduct(3); // Încercăm să vindem mai multe decât sunt în stoc
+
+    // Test 5: Attempt to use deleted assignment operators (comentat pentru a evita eroarea la compilare)
+    // CosmeticProduct anotherProduct;
+    // anotherProduct = lipstickCopy; // Copy assignment (șters)
+    // anotherProduct = std::move(lipstickCopy); // Move assignment (șters)
+
+    // Test 6: Crearea unui BundleCosmeticProduct
+    std::cout << "\nCreating a Bundle...\n";
+    CosmeticProduct foundation("Foundation", "YSL", 20.99, 3, "Matte finish with SPF 15.");
+    CosmeticProduct mascara("Mascara", "Maybelline", 15.50, 4, "Waterproof and volumizing.");
+
+    // Vectorul de produse pentru bundle
+    std::vector<CosmeticProduct> productList = {lipstickCopy, foundation, mascara};
+
+    // Cream un BundleCosmeticProduct folosind constructorul
+    BundleCosmeticProduct bundle(
+        "Beauty Bundle", "Sephora", 0.0, 1, "A curated beauty set.",
+        productList, 20.0 // Discount de 20%
+    );
+
+    // Afișăm informațiile despre bundle
+    std::cout << "\nBundle Details:\n";
+    bundle.displayBundleInfo();
+
+    // Test 7: Move Constructor pentru BundleCosmeticProduct
+    std::cout << "\nTesting Move Constructor for BundleCosmeticProduct...\n";
+    BundleCosmeticProduct movedBundle = std::move(bundle);
+    movedBundle.displayBundleInfo();
+
+    // Test 8: Copy Constructor pentru BundleCosmeticProduct
+    std::cout << "\nTesting Copy Constructor for BundleCosmeticProduct...\n";
+    BundleCosmeticProduct copiedBundle = movedBundle;
+    copiedBundle.displayBundleInfo();
 
     return 0;
 }

@@ -21,6 +21,9 @@ endif()
 # Define the executable 
 add_executable(${PROJECT_NAME}    
     inc/makeup.hpp
+    inc/bundle_cosmetic.hpp
     src/main.cpp                 
     src/makeup.cpp
+    src/bundle_cosmetic.cpp
+
 )

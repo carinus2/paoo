@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cstring>
 
-CosmeticProduct::CosmeticProduct(std::string n, std::string b, double p, int q, char* desc) 
+CosmeticProduct::CosmeticProduct(std::string n, std::string b, double p, int q, const char* desc) 
     : name(n), brand(b), price(p), quantity(q) {
     description = new char[strlen(desc) + 1];
     strcpy(description, desc);
@@ -15,7 +15,7 @@ CosmeticProduct::~CosmeticProduct() {
     std::cout << "Destructor was called here."<<std::endl;
 }
 
-CosmeticProduct& CosmeticProduct::operator=(CosmeticProduct& other) {
+CosmeticProduct& CosmeticProduct::operator=(const CosmeticProduct& other) {
     if (this != &other) {
         name = other.name;
         brand = other.brand;
@@ -30,33 +30,51 @@ CosmeticProduct& CosmeticProduct::operator=(CosmeticProduct& other) {
     return *this;
 }
 
+
+// Copy Constructor
+CosmeticProduct::CosmeticProduct(const CosmeticProduct& other)
+    : name(other.name), brand(other.brand), price(other.price), quantity(other.quantity) {
+    description = new char[strlen(other.description) + 1];
+    strcpy(description, other.description);
+    std::cout << "Copy Constructor called for: " << name << std::endl;
+}
+
+// Move Constructor
+CosmeticProduct::CosmeticProduct(CosmeticProduct&& other) noexcept
+    : name(std::move(other.name)), brand(std::move(other.brand)), price(other.price), quantity(other.quantity) {
+    description = other.description;
+    other.description = nullptr;
+    std::cout << "Move Constructor called for: " << name << std::endl;
+}
+
+
 // Getters
-std::string CosmeticProduct::getName() { 
+std::string CosmeticProduct::getName() const { 
     return name; 
 }
 
-std::string CosmeticProduct::getBrand() { 
+std::string CosmeticProduct::getBrand() const { 
     return brand; 
 }
 
-double CosmeticProduct::getPrice() { 
+double CosmeticProduct::getPrice() const { 
     return price; 
 }
 
-int CosmeticProduct::getQuantity() { 
+int CosmeticProduct::getQuantity() const { 
     return quantity; 
 }
 
-const char* CosmeticProduct::getDescription() { 
+const char* CosmeticProduct::getDescription() const { 
     return description; 
 }
 
 // Setters
-void CosmeticProduct::setName( std::string& n) { 
+void CosmeticProduct::setName(const std::string& n) { 
     name = n; 
 }
 
-void CosmeticProduct::setBrand(std::string& b) { 
+void CosmeticProduct::setBrand(const std::string& b) { 
     brand = b; 
 }
 
@@ -68,7 +86,7 @@ void CosmeticProduct::setQuantity(int q) {
     quantity = q; 
 }
 
-void CosmeticProduct::setDescription(char* desc) {
+void CosmeticProduct::setDescription(const char* desc) {
     delete[] description; 
     description = new char[strlen(desc) + 1];
     strcpy(description, desc);
@@ -85,7 +103,7 @@ bool CosmeticProduct::sellProduct(int amount) {
 }
 
 
-void CosmeticProduct::displayProductInfo() {
+void CosmeticProduct::displayProductInfo() const{
     std::cout << "Product - Name: " << name
               << ", Brand: " << brand
               << ", Price: $" << price
