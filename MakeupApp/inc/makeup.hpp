@@ -1,6 +1,8 @@
 #ifndef MAKEUP_HPP
 #define MAKEUP_HPP
+
 #include <string>
+#include <memory>
 
 class CosmeticProduct {
 private:
@@ -8,22 +10,26 @@ private:
     std::string brand;
     double price;
     int quantity;
-    char* description;
+    std::unique_ptr<char[]> description; // Înlocuire cu std::unique_ptr
 
 public:
-
+    // Constructor
     CosmeticProduct(std::string n, std::string b, double p, int q, const char* desc);
 
+    // Destructor
     ~CosmeticProduct();
 
-    CosmeticProduct& operator=(const CosmeticProduct& other);
-
-     // Copy Constructor
+    // Constructor de copiere
     CosmeticProduct(const CosmeticProduct& other);
 
-    // Move Constructor
+    // Operator de copiere
+    CosmeticProduct& operator=(const CosmeticProduct& other);
+
+    // Constructor de mutare
     CosmeticProduct(CosmeticProduct&& other) noexcept;
 
+    // Operator de mutare
+    CosmeticProduct& operator=(CosmeticProduct&& other) noexcept;
 
     // Getters
     std::string getName() const;
@@ -37,8 +43,9 @@ public:
     void setBrand(const std::string& b);
     void setPrice(double p);
     void setQuantity(int q);
-    void setDescription(const char* desc); 
+    void setDescription(const char* desc);
 
+    // Funcții
     bool sellProduct(int amount);
     void displayProductInfo() const;
 };

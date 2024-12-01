@@ -1,20 +1,28 @@
-#include <makeup.hpp>
+#include "makeup.hpp"
 #include <iostream>
 #include <cstring>
 
-CosmeticProduct::CosmeticProduct(std::string n, std::string b, double p, int q, const char* desc) 
-    : name(n), brand(b), price(p), quantity(q) {
-    description = new char[strlen(desc) + 1];
-    strcpy(description, desc);
-    std::cout << "Constructor for parent class was called here."<<std::endl;
-
+// Constructor
+CosmeticProduct::CosmeticProduct(std::string n, std::string b, double p, int q, const char* desc)
+    : name(n), brand(b), price(p), quantity(q), description(std::make_unique<char[]>(strlen(desc) + 1)) {
+    strcpy(description.get(), desc);
+    std::cout << "Constructor for parent class was called here." << std::endl;
 }
 
+// Destructor
 CosmeticProduct::~CosmeticProduct() {
-    delete[] description;
-    std::cout << "Destructor for parent class was called here."<<std::endl;
+    std::cout << "Destructor for parent class was called here." << std::endl;
 }
 
+// Constructor de copiere
+CosmeticProduct::CosmeticProduct(const CosmeticProduct& other)
+    : name(other.name), brand(other.brand), price(other.price), quantity(other.quantity),
+      description(std::make_unique<char[]>(strlen(other.description.get()) + 1)) {
+    strcpy(description.get(), other.description.get());
+    std::cout << "Copy Constructor called for: " << name << std::endl;
+}
+
+// Operator de copiere
 CosmeticProduct& CosmeticProduct::operator=(const CosmeticProduct& other) {
     if (this != &other) {
         name = other.name;
@@ -22,31 +30,32 @@ CosmeticProduct& CosmeticProduct::operator=(const CosmeticProduct& other) {
         price = other.price;
         quantity = other.quantity;
 
-        delete[] description; 
-        description = new char[strlen(other.description) + 1];
-        strcpy(description, other.description);
+        description = std::make_unique<char[]>(strlen(other.description.get()) + 1);
+        strcpy(description.get(), other.description.get());
     }
-    std::cout << "Overload operator was called here."<<std::endl;
+    std::cout << "Overload operator was called here." << std::endl;
     return *this;
 }
 
-
-// Copy Constructor
-CosmeticProduct::CosmeticProduct(const CosmeticProduct& other)
-    : name(other.name), brand(other.brand), price(other.price), quantity(other.quantity) {
-    description = new char[strlen(other.description) + 1];
-    strcpy(description, other.description);
-    std::cout << "Copy Constructor called for: " << name << std::endl;
-}
-
-// Move Constructor
+// Constructor de mutare
 CosmeticProduct::CosmeticProduct(CosmeticProduct&& other) noexcept
-    : name(std::move(other.name)), brand(std::move(other.brand)), price(other.price), quantity(other.quantity) {
-    description = other.description;
-    other.description = nullptr;
+    : name(std::move(other.name)), brand(std::move(other.brand)), price(other.price), quantity(other.quantity),
+      description(std::move(other.description)) {
     std::cout << "Move Constructor called for: " << name << std::endl;
 }
 
+// Operator de mutare
+CosmeticProduct& CosmeticProduct::operator=(CosmeticProduct&& other) noexcept {
+    if (this != &other) {
+        name = std::move(other.name);
+        brand = std::move(other.brand);
+        price = other.price;
+        quantity = other.quantity;
+        description = std::move(other.description);
+    }
+    std::cout << "Move Assignment Operator was called here." << std::endl;
+    return *this;
+}
 
 // Getters
 std::string CosmeticProduct::getName() const { 
@@ -66,7 +75,7 @@ int CosmeticProduct::getQuantity() const {
 }
 
 const char* CosmeticProduct::getDescription() const { 
-    return description; 
+    return description.get(); 
 }
 
 // Setters
@@ -87,11 +96,11 @@ void CosmeticProduct::setQuantity(int q) {
 }
 
 void CosmeticProduct::setDescription(const char* desc) {
-    delete[] description; 
-    description = new char[strlen(desc) + 1];
-    strcpy(description, desc);
+    description = std::make_unique<char[]>(strlen(desc) + 1);
+    strcpy(description.get(), desc);
 }
 
+// Funcții
 bool CosmeticProduct::sellProduct(int amount) {
     if (amount > quantity) {
         std::cout << "Insufficient stock for " << name << " by " << brand << ". Only " << quantity << " left." << std::endl;
@@ -102,12 +111,11 @@ bool CosmeticProduct::sellProduct(int amount) {
     return true;
 }
 
-
-void CosmeticProduct::displayProductInfo() const{
+void CosmeticProduct::displayProductInfo() const {
     std::cout << "Product - Name: " << name
               << ", Brand: " << brand
               << ", Price: $" << price
               << ", Quantity: " << quantity
-              << ", Description: " << description
+              << ", Description: " << description.get()
               << std::endl;
 }
