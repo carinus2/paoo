@@ -1,4 +1,4 @@
-#include "makeup.hpp"
+#include <makeup.hpp>
 #include <iostream>
 #include <cstring>
 
@@ -6,13 +6,13 @@ CosmeticProduct::CosmeticProduct(std::string n, std::string b, double p, int q, 
     : name(n), brand(b), price(p), quantity(q) {
     description = new char[strlen(desc) + 1];
     strcpy(description, desc);
-    std::cout << "Constructor was called here."<<std::endl;
+    std::cout << "Constructor for parent class was called here."<<std::endl;
 
 }
 
 CosmeticProduct::~CosmeticProduct() {
     delete[] description;
-    std::cout << "Destructor was called here."<<std::endl;
+    std::cout << "Destructor for parent class was called here."<<std::endl;
 }
 
 CosmeticProduct& CosmeticProduct::operator=(const CosmeticProduct& other) {

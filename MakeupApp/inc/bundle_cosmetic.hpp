@@ -5,19 +5,29 @@
 #include <vector>
 #include <string>
 
+
 class BundleCosmeticProduct : public CosmeticProduct {
-private:
-    std::vector<CosmeticProduct> products; // Lista produselor din pachet
-    double bundleDiscount;                 // Discount pentru pachet
-
 public:
-    // Constructor
+    // Constructori existenți
     BundleCosmeticProduct(std::string n, std::string b, double p, int q, const char* desc,
-                          const std::vector<CosmeticProduct>& products, double discount);
+                          const std::vector<CosmeticProduct>& productList, double discount);
+    ~BundleCosmeticProduct();
 
-    // Metode adiționale
-    double calculateBundlePrice() const; // Calculează prețul total redus al pachetului
-    void displayBundleInfo() const;      // Afișează informațiile despre pachet
+    // Constructor de copiere și operator de copiere dezactivate
+    BundleCosmeticProduct(const BundleCosmeticProduct&) = delete;
+    BundleCosmeticProduct& operator=(const BundleCosmeticProduct&) = delete;
+
+    // Constructor de mutare și operator de mutare dezactivate
+    BundleCosmeticProduct(BundleCosmeticProduct&&) = delete;
+    BundleCosmeticProduct& operator=(BundleCosmeticProduct&&) = delete;
+
+    // Funcții
+    double calculateBundlePrice() const;
+    void displayBundleInfo() const;
+
+private:
+    std::vector<CosmeticProduct> products;
+    double bundleDiscount;
 };
 
 #endif // BUNDLE_COSMETIC_HPP

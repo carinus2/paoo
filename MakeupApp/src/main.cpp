@@ -1,7 +1,7 @@
-#include "bundle_cosmetic.hpp"
+#include <bundle_cosmetic.hpp>
 #include <iostream>
 #include <vector>
-#include <utility> // pentru std::move
+#include <makeup.hpp>
 
 int main() {
     // Test 1: Constructor și Destructor
@@ -11,23 +11,16 @@ int main() {
 
     // Test 2: Copy Constructor
     std::cout << "\nTesting Copy Constructor...\n";
-    CosmeticProduct lipstickCopy = lipstick;
-    lipstickCopy.displayProductInfo();
+    // CosmeticProduct lipstickCopy = lipstick; // Comentat pentru că Copy Constructor este = delete
 
     // Test 3: Move Constructor
     std::cout << "\nTesting Move Constructor...\n";
-    CosmeticProduct lipstickMoved = std::move(lipstick);
-    lipstickMoved.displayProductInfo();
+    // CosmeticProduct lipstickMoved = std::move(lipstick); // Comentat pentru că Move Constructor este = delete
 
     // Test 4: Sell Product
     std::cout << "\nTesting Product Selling...\n";
-    lipstickMoved.sellProduct(3); // Vindem 3 unități
-    lipstickMoved.sellProduct(3); // Încercăm să vindem mai multe decât sunt în stoc
-
-    // Test 5: Attempt to use deleted assignment operators (comentat pentru a evita eroarea la compilare)
-    // CosmeticProduct anotherProduct;
-    // anotherProduct = lipstickCopy; // Copy assignment (șters)
-    // anotherProduct = std::move(lipstickCopy); // Move assignment (șters)
+    lipstick.sellProduct(3); // Vindem 3 unități
+    lipstick.sellProduct(3); // Încercăm să vindem mai multe decât sunt în stoc
 
     // Test 6: Crearea unui BundleCosmeticProduct
     std::cout << "\nCreating a Bundle...\n";
@@ -35,7 +28,7 @@ int main() {
     CosmeticProduct mascara("Mascara", "Maybelline", 15.50, 4, "Waterproof and volumizing.");
 
     // Vectorul de produse pentru bundle
-    std::vector<CosmeticProduct> productList = {lipstickCopy, foundation, mascara};
+    std::vector<CosmeticProduct> productList = {lipstick, foundation, mascara};
 
     // Cream un BundleCosmeticProduct folosind constructorul
     BundleCosmeticProduct bundle(
@@ -49,13 +42,21 @@ int main() {
 
     // Test 7: Move Constructor pentru BundleCosmeticProduct
     std::cout << "\nTesting Move Constructor for BundleCosmeticProduct...\n";
-    BundleCosmeticProduct movedBundle = std::move(bundle);
-    movedBundle.displayBundleInfo();
+    // BundleCosmeticProduct movedBundle = std::move(bundle); // Comentat pentru că Move Constructor este = delete
 
     // Test 8: Copy Constructor pentru BundleCosmeticProduct
     std::cout << "\nTesting Copy Constructor for BundleCosmeticProduct...\n";
-    BundleCosmeticProduct copiedBundle = movedBundle;
-    copiedBundle.displayBundleInfo();
+    // BundleCosmeticProduct copiedBundle = movedBundle; // Comentat pentru că Copy Constructor este = delete
+
+    CosmeticProduct* basePtr = new BundleCosmeticProduct(
+        "Beauty Bundle 2", "Sephora", 0.0, 1, "A curated beauty set.",
+        productList, 20.0
+    );
+
+    basePtr->displayProductInfo();
+
+    // Cleanup
+    delete basePtr;
 
     return 0;
 }

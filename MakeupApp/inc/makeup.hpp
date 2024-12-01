@@ -1,5 +1,5 @@
+#ifndef MAKEUP_HPP
 #define MAKEUP_HPP
-
 #include <string>
 
 class CosmeticProduct {
@@ -42,3 +42,5 @@ public:
     bool sellProduct(int amount);
     void displayProductInfo() const;
 };
+
+#endif // MAKEUP_HPP
