@@ -10,14 +10,14 @@ private:
     std::string brand;
     double price;
     int quantity;
-    std::unique_ptr<char[]> description; // Înlocuire cu std::unique_ptr
+    std::unique_ptr<char[]> description;
 
 public:
     // Constructor
     CosmeticProduct(std::string n, std::string b, double p, int q, const char* desc);
 
     // Destructor
-    ~CosmeticProduct();
+    virtual ~CosmeticProduct();
 
     // Constructor de copiere
     CosmeticProduct(const CosmeticProduct& other);
@@ -47,7 +47,7 @@ public:
 
     // Funcții
     bool sellProduct(int amount);
-    void displayProductInfo() const;
+    virtual void displayProductInfo() const;
 };
 
 #endif // MAKEUP_HPP
